@@ -27,9 +27,9 @@ const projects = [
   {
     name: 'Divergent Studios',
     status: 'In Development',
-    category: 'Streetwear & Culture',
+    category: 'Clothing & Culture',
     description:
-      'Divergent Studios is a streetwear and sneaker culture brand that blends futuristic, space-inspired designs with wearable art. Its goal is to push fashion boundaries by creating limited-edition apparel and accessories that stand out while connecting with fans of culture, music, and creativity. The dream is to become a leading trendsetter in streetwear, where every drop tells a story and inspires a community of forward-thinking creators.',
+      'Divergent Studios is a clothing brand that blends futuristic, space-inspired designs with wearable art. Its goal is to push fashion boundaries by creating limited-edition apparel and accessories that stand out while connecting with fans of culture, music, and creativity. The dream is to become a leading trendsetter in fashion, where every drop tells a story and inspires a community of forward-thinking creators.',
   },
   {
     name: 'Velvair Studios',

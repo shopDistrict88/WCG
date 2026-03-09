@@ -26,8 +26,12 @@ const expectations = [
   { title: 'No Pressure', description: 'Applying starts a conversation, not a contract. If there is alignment, we will figure out the best way to work together.' },
 ]
 
+const WEB3FORMS_KEY = '16754d4d-bc50-4439-9058-cd2d2708502c'
+
 export default function ApplyPage() {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,10 +42,40 @@ export default function ApplyPage() {
     timeline: '',
   })
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    console.log('Application submitted:', formData)
+    setSubmitting(true)
+    setError('')
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `Collaboration Application — ${formData.project} — ${formData.name}`,
+          from_name: formData.name,
+          replyto: formData.email,
+          'Full Name': formData.name,
+          'Email': formData.email,
+          'Project / Venture Name': formData.project,
+          'Current Stage': formData.stage || 'Not specified',
+          'Project Description': formData.description,
+          'Why Wilson Collective': formData.why,
+          'Timeline': formData.timeline || 'Not specified',
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setSubmitted(true)
+      } else {
+        setError('Something went wrong. Please try again or email us directly.')
+      }
+    } catch {
+      setError('Failed to submit. Please check your connection and try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handleChange = (field: string, value: string) => {
@@ -274,11 +308,17 @@ export default function ApplyPage() {
                   </div>
 
                   <div className="pt-4">
+                    {error && (
+                      <div className="mb-4 border border-red-500/30 bg-red-500/5 p-4">
+                        <p className="text-sm text-red-400">{error}</p>
+                      </div>
+                    )}
                     <button
                       type="submit"
-                      className="px-10 py-4 bg-stone-100 text-stone-950 text-sm font-medium tracking-wide hover:bg-accent transition-all duration-300 w-full md:w-auto"
+                      disabled={submitting}
+                      className="px-10 py-4 bg-stone-100 text-stone-950 text-sm font-medium tracking-wide hover:bg-accent transition-all duration-300 w-full md:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Submit Application
+                      {submitting ? 'Submitting...' : 'Submit Application'}
                     </button>
                     <p className="mt-4 text-xs text-stone-600">
                       By submitting, you are starting a conversation — not entering a contract.

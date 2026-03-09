@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.local
 
 # Old/nested project folders
 wcg-site/
@@ -26,3 +28,5 @@ wilson-collective/
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
